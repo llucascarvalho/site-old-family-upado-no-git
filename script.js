@@ -1,3 +1,11 @@
+// PARA APARECER PAGINA APENAS APOS CARREGAMENTO COMPLETO
+
+function hiddenLoading(){
+  document.getElementById('loading').classList.add(`loadingHidden`) 
+  
+}
+
+// FUNÇÃO PARA DIMINUIR MENU AO ROLAR
 $(document).scroll(function () {
 
     var y = $(this).scrollTop();
