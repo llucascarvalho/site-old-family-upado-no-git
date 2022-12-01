@@ -1,61 +1,74 @@
-// PARA APARECER PAGINA APENAS APOS CARREGAMENTO COMPLETO
-
 function hiddenLoading(){
   document.getElementById('loading').classList.add(`loadingHidden`) 
   
 }
 
-// FUNÇÃO PARA DIMINUIR MENU AO ROLAR
-$(document).scroll(function () {
+window.addEventListener('scroll', onScroll)
 
-    var y = $(this).scrollTop();
-    console.log(y)
-    if (window.screen.width > 600) {
-        if (y > 50) {
-            $('.header')
-                .css({
-                    'background': '#1d1e20',
-                    'height': '60px',
-                    'transition-duration': '0.7s',
-                });
-            $('.logo')
-                .css({
-                    'width': '50px',
-                    'transition': '0.7s ease-in',
-                });
-            $('.linkmenu')
-                .css({
-                    'margin-top': '4px',
-                    'transition': '0.7s ease-in',
-                })
-        } else {
-            $('.header')
-                .css({
-                    'background': '#1d1e20',
-                    'height': '85px',
+function onScroll() {
+  showNavOnScroll()
+  showBackToTopButtonOnScroll()
 
-                });
-            $('.logo')
-                .css({
-                    'width': '100px',
-                    'transition': '0.5s ease-in',
-                });
-            $('.linkmenu')
-                .css({
-                    
-                    'margin-top': '20px',
+  activateMenuAtCurrentSection(home)
+  activateMenuAtCurrentSection(services)
+  activateMenuAtCurrentSection(about)
+  activateMenuAtCurrentSection(contact)
+}
 
-                })
-        }
-    }
-});
+function activateMenuAtCurrentSection(section){
+  const targetLine = scrollY + innerHeight / 2
+  const sectionTop = section.offsetTop
+  const sectionHeight = section.offsetHeight
+  const sectionTopReachOrPassedTargetLine = targetLine >= sectionTop
+  const sectionEndsAt = sectionTop + sectionHeight
+  const sectionEndPassedTargetLine = sectionEndsAt <= targetLine
+  const sectionBundaries = sectionTopReachOrPassedTargetLine && !sectionEndPassedTargetLine
+
+  const sectionId = section.getAttribute('id')
+  const menuElement = document.querySelector(`.menu a[href*=${sectionId}]`)
+
+  menuElement.classList.remove('active')
+  if (sectionBundaries){
+    menuElement.classList.add('active')
+  }
+}
+
+function showNavOnScroll(){
+  const nav = document.getElementById('navigation')
+  if (scrollY > 40) {
+    nav.classList.add('scroll')
+  } else {
+    nav.classList.remove('scroll')
+  }
+}
+
+function showBackToTopButtonOnScroll(){
+  if (scrollY > 800) {
+    backToTopButton.classList.add('show')
+  } else {
+    backToTopButton.classList.remove('show')
+  }
+}
+
+function openMenu(){
+  document.body.classList.add('menu-expanded')
+}
+
+function closeMenu(){
+  document.body.classList.remove('menu-expanded')
+}
 
 ScrollReveal({
-  distance: '1px',
-  origin: 'bottom',
-  duration: 1500,
-}).reveal(`
-#home`);
-window.sr = ScrollReveal({reset: false});
-
-sr.reveal('.homer', {origin: 'top', distance: '30px', duration: 2500})
+    distance: '30px',
+    origin: 'top',
+    duration: 700,
+  }).reveal(`
+  #home, 
+  #home img, 
+  #home .stats, 
+  #services,
+  #services header,
+  #services .card,
+  #about,
+  #about header,
+  #about .content`);
